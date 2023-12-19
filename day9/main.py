@@ -5,6 +5,7 @@ def get_data():
     return [[int(elem) for elem in line.split()] for line in open(INPUT_FILE).readlines()]
 
 def get_pyramide(data):
+    data.reverse()
     pyramide = [data]
     current = data
     # tant que tout les elements de current ne sont pas == 0
