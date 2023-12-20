@@ -19,15 +19,44 @@ def get_map():
     return dic
 
 
+def end(currents):
+    for current in currents:
+        if current[2] != 'Z':
+            return False
+    return True
+
+
+def get_longueur_cycle(dic, starts, instructions):
+    longeurs = []
+    for start in starts:
+        steps = 0
+        current = start
+        while current[2] != 'Z':
+            current = dic[current][instructions[steps % len(instructions)]]
+            steps += 1
+        longeurs.append(steps)
+    return longeurs
+
+
+def ppcm(longeurs):
+    ppcm = longeurs[0]
+    for i in longeurs[1:]:
+        ppcm = ppcm * i // pgcd(ppcm, i)
+    return ppcm
+
+
+def pgcd(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
+
+
 def main():
     instructions = get_instructions()
     dic = get_map()
-    current = 'AAA'
-    steps = 0
-    while current != 'ZZZ':
-        current = dic[current][instructions[steps % len(instructions)]]
-        steps += 1
-    print(steps)
+    starts = [key for key in dic.keys() if key[2] == 'A']
+    longueur = get_longueur_cycle(dic, starts, instructions)
+    print(ppcm(longueur))
 
 
 if __name__ == '__main__':
